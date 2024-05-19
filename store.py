@@ -13,7 +13,10 @@ class Store:
         self.product_list.remove(product)
 
     def get_total_quantity(self):
-        return len(self.product_list)
+        total_quantity = 0
+        for product in self.product_list:
+            total_quantity += product.get_quantity()
+        return total_quantity
 
     def get_all_products(self):
         active_products = []
