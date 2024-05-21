@@ -1,15 +1,9 @@
 import products
 import store
 
-# setup initial stock of inventory
-product_list = [products.Product("MacBook Air M2", price=1450, quant=100),
-                products.Product("Bose QuietComfort Earbuds", price=250, quant=500),
-                products.Product("Google Pixel 7", price=500, quant=250)
-                ]
-best_buy = store.Store(product_list)
-
 
 def start():
+    """Prints main menu and returns user choice."""
     while True:
         print("   Store Menu\n   ----------")
         menu = ["List all products in store", "Show total amount in store",
@@ -23,16 +17,21 @@ def start():
 
 
 def list_products(store_obj):
+    """Prints all available products in store."""
     products_in_store = store_obj.get_all_products()
     for i, product in enumerate(products_in_store):
         print(str(i+1) + ". " + product.show())
 
 
 def show_total_amount(store_obj):
+    """Print total amount of products in store."""
     print(f"Total of {store_obj.get_total_quantity()} items in store")
 
 
 def make_order(store_obj):
+    """allows user to make an order by asking which product and how much he/she
+    wants to purchase. Updates store after purchase and prints total amount of
+    purchase."""
     products_in_store = store_obj.get_all_products()
     for i, product in enumerate(products_in_store):
         print(str(i+1) + ". " + product.show())
@@ -52,6 +51,14 @@ def make_order(store_obj):
 
 
 def main():
+    """Creates instances of Products, adds them to the store and
+    create a user interface, through using the functions, defined in this file.
+    Adds the functionality that user can end the program from running."""
+    product_list = [products.Product("MacBook Air M2", price=1450, quant=100),
+                    products.Product("Bose QuietComfort Earbuds", price=250, quant=500),
+                    products.Product("Google Pixel 7", price=500, quant=250)
+                    ]
+    best_buy = store.Store(product_list)
     while True:
         menu_choice = start()
         if menu_choice == 1:
