@@ -16,7 +16,10 @@ def start():
                 "Make an order", "Quit"]
         for i, option in enumerate(menu):
             print(str(i+1) + ". " + option)
-        return int(input("Please choose a number: "))
+        try:
+            return int(input("Please choose a number: "))
+        except Exception as e:
+            print(f"Your input was invalid. {e}")
 
 
 def list_products(store_obj):
@@ -44,8 +47,7 @@ def make_order(store_obj):
             total_payment += store_obj.order([(products_in_store[int(order_choice) - 1], int(amount))])
             print("Product added to list!")
         except Exception as e:
-            print(e)
-            print("Error adding product!")
+            print(f"Error adding product!: {e}")
     print(f"Order made! Total payment:{total_payment}")
 
 
