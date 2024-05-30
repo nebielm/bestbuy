@@ -15,6 +15,13 @@ class Product:
             raise Exception("The quantity has to be a positive number.")
         self.quant = int(quant)
         self.active = True
+        self.promotion = None
+
+    def set_promotion(self, promotion_instance):
+        self.promotion = promotion_instance
+
+    def get_promotion(self):
+        return self.promotion
 
     def get_quantity(self):
         """Getter function for quantity. Returns the quantity (float)."""
@@ -51,10 +58,13 @@ class Product:
         In case of a problem, raises an Exception."""
         if quantity > self.quant:
             raise Exception("Order quantity not in storage.")
-        total_price = self.price * quantity
         self.quant -= quantity
         if self.quant == 0:
             self.active = False
+        total_price = self.price * quantity
+        if self.promotion is not None:
+            discount_price = total_price - self.promotion.apply_promotion(self, quantity)
+            return float(discount_price)
         return float(total_price)
 
 
@@ -74,6 +84,9 @@ class NoneStockedProduct(Product):
         """Buys a given quantity of the product.
         Returns the total price (float) of the purchase."""
         total_price = self.price * quantity
+        if self.promotion is not None:
+            discount_price = total_price - self.promotion.apply_promotion(self, quantity)
+            return float(discount_price)
         return float(total_price)
 
 
@@ -93,8 +106,11 @@ class LimitedProduct(Product):
         In case of ordering mor than max.-order, raises an Exception."""
         if quantity > self.maximum:
             raise Exception(f"Product can be purchased only {self.maximum} times per order.")
-        total_price = self.price * quantity
         self.quant -= quantity
         if self.quant == 0:
             self.active = False
+        total_price = self.price * quantity
+        if self.promotion is not None:
+            discount_price = total_price - self.promotion.apply_promotion(self, quantity)
+            return float(discount_price)
         return float(total_price)

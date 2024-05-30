@@ -1,5 +1,6 @@
 import products
 import store
+import promotions
 
 
 def start():
@@ -56,8 +57,16 @@ def main():
     Adds the functionality that user can end the program from running."""
     product_list = [products.Product("MacBook Air M2", price=1450, quant=100),
                     products.Product("Bose QuietComfort Earbuds", price=250, quant=500),
-                    products.Product("Google Pixel 7", price=500, quant=250)
+                    products.Product("Google Pixel 7", price=500, quant=250),
+                    products.NoneStockedProduct("Windows License", price=125),
+                    products.LimitedProduct("Shipping", price=10, quant=250, maximum_order=1)
                     ]
+    second_half_price = promotions.SecondHalfPrice("Second Half price!")
+    third_one_free = promotions.ThirdOneFree("Third One Free!")
+    thirty_percent = promotions.PercentDiscount("30% off!", percent=30)
+    product_list[0].set_promotion(second_half_price)
+    product_list[1].set_promotion(third_one_free)
+    product_list[3].set_promotion(thirty_percent)
     best_buy = store.Store(product_list)
     while True:
         menu_choice = start()
