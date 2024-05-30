@@ -48,9 +48,51 @@ class Product:
         """Buys a given quantity of the product.
         Returns the total price (float) of the purchase.
         Updates the quantity of the product.
-        In case of a problem (when? think about it), raises an Exception."""
+        In case of a problem, raises an Exception."""
         if quantity > self.quant:
             raise Exception("Order quantity not in storage.")
+        total_price = self.price * quantity
+        self.quant -= quantity
+        if self.quant == 0:
+            self.active = False
+        return float(total_price)
+
+
+class NoneStockedProduct(Product):
+    def __init__(self, name, price):
+        super().__init__(name, price, 1)
+        self.quant = 0
+
+    def set_quantity(self, quantity):
+        return 0
+
+    def show(self):
+        """Returns a string that represents the product."""
+        return f"{self.name}, Price: {self.price}"
+
+    def buy(self, quantity):
+        """Buys a given quantity of the product.
+        Returns the total price (float) of the purchase."""
+        total_price = self.price * quantity
+        return float(total_price)
+
+
+class LimitedProduct(Product):
+    def __init__(self, name, price, quant, maximum_order):
+        super().__init__(name, price, quant)
+        self.maximum = maximum_order
+
+    def show(self):
+        """Returns a string that represents the product."""
+        return f"{self.name}, Price: {self.price}, Maximum Order: {self.maximum}"
+
+    def buy(self, quantity):
+        """Buys a given quantity of the product.
+        Returns the total price (float) of the purchase.
+        Updates the quantity of the product.
+        In case of ordering mor than max.-order, raises an Exception."""
+        if quantity > self.maximum:
+            raise Exception(f"Product can be purchased only {self.maximum} times per order.")
         total_price = self.price * quantity
         self.quant -= quantity
         if self.quant == 0:
